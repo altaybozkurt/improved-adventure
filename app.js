@@ -18,7 +18,23 @@ const db = getFirestore(app);
 const provider = new GoogleAuthProvider();
 
 document.getElementById("loginBtn").addEventListener("click", async () => {
-  const result = await signInWithPopup(auth, provider);
+  const result = await import { getRedirectResult, signInWithRedirect } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+// Giriş butonu event listener
+document.getElementById("loginBtn").addEventListener("click", () => {
+  signInWithRedirect(auth, provider);
+});
+
+// Sayfa yüklenirken redirect sonucu kontrol et
+getRedirectResult(auth)
+  .then((result) => {
+    if (result) {
+      alert(`Hoş geldin ${result.user.displayName}`);
+    }
+  })
+  .catch((error) => {
+    console.error(error);
+  });;
   alert(`Hoş geldin ${result.user.displayName}`);
 });
 
